@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Information Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+
+        .dashboard {
+            width: 50%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .logout {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .logout button {
+            padding: 10px 20px;
+            background: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .logout button:hover {
+            background: darkred;
+        }
+
+        .profile-pic {
+            display: block;
+            margin: 20px auto;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #007bff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard">
+        <h2>User Information Dashboard</h2>
+        <img src="<%= image %>" alt="Profile Picture" class="profile-pic">
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Details</th>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>
+                    <%=name%>
+                </td>
+            </tr>
+            <tr>
+                <td>Phone</td>
+                <td>
+                    <%= phone%>
+                </td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>
+                    <%= email%>
+                </td>
+            </tr>
+            <tr>
+                <td>Username</td>
+                <td>
+                    <%= username%>
+                </td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td>
+                    <%= password%>
+                </td>
+            </tr>
+            <tr>
+                <td>Message</td>
+                <td>
+                    <%= msg%>
+                </td>
+            </tr>
+        </table>
+        <div class="logout">
+            <button onclick="logout()">Logout</button>
+            <button onclick="Back()">Back</button>
+        </div>
+    </div>
+    <script src="back.js"></script>
+
+    <script>
+        function logout() {
+            alert("You have been logged out.");
+            window.location.href = "/logout"; // Redirect to login page
+        }
+        function Back() {
+            window.location.href = "/profile"; // Redirect to login page
+        }
+    </script>
+
+</body>
+
+</html>

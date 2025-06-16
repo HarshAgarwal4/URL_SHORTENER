@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #333;
+            color: white;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: white;
+            gap: 10px;
+            /* Adds spacing between logo and text */
+        }
+
+        .logo img {
+            width: 50px;
+            height: auto;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+       .buttons button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input {
+            padding: 10px;
+            width: 300px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .url-grid {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .url-grid h2 {
+            margin-bottom: 15px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            justify-content: center;
+        }
+
+        .url-card {
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><img src="images/logo.png" alt="logo">URL SHORTENER</div>
+        <div class="buttons">
+            <button onclick="login()">Login</button>
+            <button onclick="signUp()">SignUp</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Shorten Your URL</h1>
+        
+        <!-- Form added here -->
+        <form id="shortenForm" method="post" >
+            <input type="url" id="urlInput" name="url" placeholder="Enter your URL here" required>
+            <button type="submit">Shorten</button>
+        </form>
+
+        <p id="shortenedUrl"></p>
+        
+        <div class="url-grid">
+            <h2>All Shortened URLs</h2>
+            <div class="grid-container">
+                <!-- Data will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function signUp() {
+            window.location.href = "/signup";
+        }
+
+        function login() {
+            window.location.href = "/login";
+        }
+
+        document.getElementById("shortenForm").addEventListener("submit", async function(event) {
+            event.preventDefault()
+            window.location.href = "/login"
+        })
+    </script>
+</body>
+</html>

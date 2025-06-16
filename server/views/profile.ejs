@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            text-align: center;
+            padding-bottom: 50px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #333;
+            color: white;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: white;
+            gap: 10px;
+            /* Adds spacing between logo and text */
+        }
+
+        .logo img {
+            width: 50px;
+            /* Increased size for better visibility */
+            height: auto;
+        }
+
+
+        .profile-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+        }
+
+        .profile-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-btn {
+            background-color: #ff9800;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+            min-width: 100px;
+            text-align: left;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: black;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input {
+            padding: 10px;
+            width: 300px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .table-container {
+            margin-top: 30px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 90%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+
+        .short-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .short-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo"><img src="images/logo.png" alt="logo">URL SHORTENER</div>
+        <div class="profile-menu">
+            <div class="profile-icon"><img src="<%=image%>" alt=""></div>
+            <div class="dropdown">
+                <button class="profile-btn">
+                    <%=name%> ▼
+                </button>
+                <div class="dropdown-content">
+                    <a href="/data">Profile</a>
+                    <a href="/logout">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Shorten Your URL</h1>
+
+        <!-- Form for URL shortening -->
+        <form id="shortenForm">
+            <input type="url" id="urlInput" name="originalURL" placeholder="Enter your URL here" required>
+            <button type="submit">Shorten</button>
+        </form>
+
+        <p id="shortenedUrl"></p>
+
+        <div class="table-container">
+            <h2>All Shortened URLs</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>S No.</th>
+                        <th>Original Link</th>
+                        <th>Short Link</th>
+                        <th>Clicks</th>
+                    </tr>
+                </thead>
+                <tbody id="urlTableBody">
+                    <!-- Data will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("shortenForm").addEventListener("submit", async function (event) {
+            event.preventDefault(); // Prevent page reload
+            const urlInput = document.getElementById("urlInput").value;
+
+            const response = await fetch("/shorten", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ originalURL: urlInput })
+            });
+
+            const data = await response.json();
+
+            if (data.status == 1) {
+                document.getElementById("shortenedUrl").innerHTML =
+                    `<strong>Shortened URL:</strong> <a href="http://localhost:8000/url/${data.shortid}" target="_blank">http://localhost:8000/url/${data.shortid}</a>`;
+
+                loadUrls(); // Refresh the table after adding new URL
+
+                // Reset form after successful submission
+                document.getElementById("shortenForm").reset();
+            } else {
+                document.getElementById("shortenedUrl").innerHTML = `<span class="error">Error: ${data.error}</span>`;
+            }
+        });
+
+        async function loadUrls() {
+            const response = await fetch("/getalluserurls"); // API to get all URLs
+            const data = await response.json();
+
+            const tableBody = document.getElementById("urlTableBody");
+            tableBody.innerHTML = ""; // Clear table before inserting new data
+
+            if (data.status === 1 && data.urls.length > 0) {
+                data.urls.forEach((url, index) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td><a href="${url.redirectURL}" target="_blank">${url.redirectURL}</a></td>
+                        <td class="short-link"><a href="https://9cee-2402-3a80-4035-1135-9106-561b-a362-14eb.ngrok-free.app/url/${url.shortid}" target="_blank">https://9cee-2402-3a80-4035-1135-9106-561b-a362-14eb.ngrok-free.app/url/${url.shortid}</a></td>
+                        <td>${url.analytics.length}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='4'>No URLs found</td></tr>";
+            }
+        }
+
+        // Load URLs when page loads
+        loadUrls();
+    </script>
+</body>
+
+</html>
