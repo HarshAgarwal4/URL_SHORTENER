@@ -2,124 +2,212 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login Page</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        .container {
-            width: 30%;
-            margin: 100px auto;
-            background: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-            position: relative;
-        }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
 
-        .form-wrapper {
-            display: flex;
-            width: 200%;
-            transition: transform 0.5s ease-in-out;
-        }
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    }
 
-        .form-container {
-            width: 50%;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+    .toggle-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+    }
 
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+    .toggle-buttons button {
+      flex: 1 1 45%;
+      padding: 12px;
+      background-color: #777;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
 
-        button {
-            background-color: blue;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    .toggle-buttons button.active {
+      background-color: #007bff;
+      box-shadow: 0 0 8px #007bffaa;
+    }
 
-        button:hover {
-            background-color: darkblue;
-        }
+    .form-wrapper {
+      display: flex;
+      width: 200%;
+      transition: transform 0.5s ease-in-out;
+    }
 
-        .toggle-buttons {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
+    .form-container {
+      width: 50%;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
 
-        .toggle-buttons button {
-            margin: 5px;
-            background-color: gray;
-        }
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
 
-        .toggle-buttons button.active {
-            background-color: blue;
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input {
+      padding: 14px;
+      margin: 10px 0;
+      border: 1.5px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    button[type="submit"],
+    button[type="button"] {
+      background-color: #007bff;
+      color: white;
+      padding: 14px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button[type="button"] {
+      background-color: #6c757d;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    button[type="button"]:hover {
+      background-color: #5a6268;
+    }
+
+    @media (max-width: 650px) {
+      .form-wrapper {
+        flex-direction: column;
+        width: 100%;
+        transform: translateX(0) !important;
+      }
+
+      .form-container {
+        width: 100%;
+        padding: 0;
+        display: none; /* Toggle visibility manually */
+      }
+    }
+  </style>
+
+  <script>
+    function toggleForm(type) {
+      const formWrapper = document.querySelector('.form-wrapper');
+      const userForm = document.getElementById('user_form');
+      const adminForm = document.getElementById('admin_form');
+      const isDesktop = window.innerWidth > 650;
+
+      if (isDesktop) {
+        // Desktop sliding effect
+        formWrapper.style.transform = type === 'admin' ? 'translateX(-50%)' : 'translateX(0)';
+        userForm.style.display = 'block';
+        adminForm.style.display = 'block';
+      } else {
+        // Mobile: toggle visibility
+        if (type === 'admin') {
+          userForm.style.display = 'none';
+          adminForm.style.display = 'block';
+        } else {
+          userForm.style.display = 'block';
+          adminForm.style.display = 'none';
         }
-    </style>
-    <script>
-        function toggleForm(type) {
-            const formWrapper = document.querySelector('.form-wrapper');
-            if (type === 'admin') {
-                formWrapper.style.transform = 'translateX(-50%)';
-            } else {
-                formWrapper.style.transform = 'translateX(0)';
-            }
-            document.querySelectorAll('.toggle-buttons button').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(type).classList.add('active');
-        }
-    </script>
+        formWrapper.style.transform = 'translateX(0)';
+      }
+
+      // Update active button
+      document.querySelectorAll('.toggle-buttons button').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(type).classList.add('active');
+    }
+
+    function Back() {
+      window.location.href = "/";
+    }
+
+    // Init on load
+    window.addEventListener('load', () => {
+      toggleForm('user');
+    });
+
+    // Adjust on resize
+    window.addEventListener('resize', () => {
+      const activeBtn = document.querySelector('.toggle-buttons button.active');
+      if (activeBtn) toggleForm(activeBtn.id);
+    });
+  </script>
 </head>
 
 <body>
-    <div class="container">
-        <div class="toggle-buttons">
-            <button id="user" class="active" onclick="toggleForm('user')">User Login</button>
-            <button id="admin" onclick="toggleForm('admin')">Admin Login</button>
-        </div>
-        <div class="form-wrapper">
-            <div class="form-container">
-                <h2>User Login</h2>
-                <form action="/login" method="post" id="user_login_form">
-                    <input type="text" name="username" placeholder="Username" required id="user_username">
-                    <input type="password" name="password" placeholder="Password" required id="user_password">
-                    <button type="submit">Login</button>
-                    <button onclick="Back()">Back</button>
-                </form>
-            </div>
-            <div class="form-container">
-                <h2>Admin Login</h2>
-                <form id="admin_login_form" method="post" action="/admin">
-                    <input type="text" name="name" placeholder="Admin Username" required id="admin_username">
-                    <input type="password" name="pass" placeholder="Admin Password" required
-                        id="admin_password">
-                    <button type="submit">Login</button> 
-                    <button onclick="Back()">Back</button> 
-                </form>
-            </div>
-        </div>
+  <div class="container">
+    <div class="toggle-buttons">
+      <button id="user" class="active" onclick="toggleForm('user')">User Login</button>
+      <button id="admin" onclick="toggleForm('admin')">Admin Login</button>
     </div>
-    <script>
-        function Back(){
-            window.location.href = "/"
-        }
-    </script>
+
+    <div class="form-wrapper">
+      <div class="form-container" id="user_form">
+        <h2>User Login</h2>
+        <form action="/login" method="post">
+          <input type="text" name="username" placeholder="Username" required />
+          <input type="password" name="password" placeholder="Password" required />
+          <button type="submit">Login</button>
+          <button type="button" onclick="Back()">Back</button>
+        </form>
+      </div>
+
+      <div class="form-container" id="admin_form">
+        <h2>Admin Login</h2>
+        <form action="/admin" method="post">
+          <input type="text" name="name" placeholder="Admin Username" required />
+          <input type="password" name="pass" placeholder="Admin Password" required />
+          <button type="submit">Login</button>
+          <button type="button" onclick="Back()">Back</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

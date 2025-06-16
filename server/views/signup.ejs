@@ -2,116 +2,158 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home Page</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        .navbar {
-            background: #333;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
 
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            padding: 10px;
-        }
+    .navbar {
+      background: #333;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      color: white;
+    }
 
-        .container {
-            width: 50%;
-            margin: 50px auto;
-            background: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-        }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 15px;
+      transition: background 0.3s ease;
+    }
 
-        input,
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+    .navbar a:hover {
+      background: #444;
+      border-radius: 4px;
+    }
 
-        button {
-            background-color: blue;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    .container {
+      width: 90%;
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 25px 30px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
 
-        button:hover {
-            background-color: darkblue;
-        }
-    </style>
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      border: 1.5px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 14px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    @media (max-width: 600px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .navbar a {
+        width: 100%;
+        padding: 12px 0;
+      }
+
+      .container {
+        padding: 20px;
+        margin: 20px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <div class="navbar">
-        <div><a href="/">Home</a></div>
-        <div><a href="/login">Login</a></div>
-    </div>
-    <div class="container">
-        <h2>Contact Us</h2>
-        <iframe name="responseFrame" style="display: none;"></iframe>
-        <form id="form" method="post" enctype="multipart/form-data">
-            <input type="text" name="name" placeholder="Name" required id="Client_name" target="responseFrame">
-            <input type="text" name="username" placeholder="Username" required id="Client_username">
-            <input type="password" name="password" placeholder="Password" required id="Client_password">
-            <input type="tel" name="phone" placeholder="Phone" required id="Client_phone">
-            <input type="email" name="email" placeholder="Email" required id="Client_email">
-            <textarea name="msg" placeholder="msg" rows="5" required id="Client_msg"></textarea>
-            <input type="file" name="picture" accept="image/*" required id="Client_picture">
-            <button type="submit">Submit</button>
-        </form>
-        <script>
-            let form = document.getElementById("form");
+  <div class="navbar">
+    <div><a href="/">Home</a></div>
+    <div><a href="/login">Login</a></div>
+  </div>
 
-            form.addEventListener("submit", async (e) => {
-                e.preventDefault(); // Prevent default form submission
+  <div class="container">
+    <h2>Contact Us</h2>
+    <form id="form" method="post" enctype="multipart/form-data">
+      <input type="text" name="name" placeholder="Name" required id="Client_name">
+      <input type="text" name="username" placeholder="Username" required id="Client_username">
+      <input type="password" name="password" placeholder="Password" required id="Client_password">
+      <input type="tel" name="phone" placeholder="Phone" required id="Client_phone">
+      <input type="email" name="email" placeholder="Email" required id="Client_email">
+      <textarea name="msg" placeholder="Message" rows="5" required id="Client_msg"></textarea>
+      <input type="file" name="picture" accept="image/*" required id="Client_picture">
+      <button type="submit">Submit</button>
+    </form>
+  </div>
 
-                let formData = new FormData(form); // Create FormData object
+  <script>
+    const form = document.getElementById("form");
 
-                try {
-                    let response = await fetch("/signup", {
-                        method: "POST",
-                        body: formData,
-                    });
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-                    let result = await response.json(); // Convert response to JSON
+      const formData = new FormData(form);
 
-                    if (result.status === 1) {
-                        alert("Signup successful!"); // Show success alert
-                        form.reset(); // Clear the form
-                    } else {
-                        alert("Error: " + result.message); // Show error alert
+      try {
+        const response = await fetch("/signup", {
+          method: "POST",
+          body: formData,
+        });
 
-                    }
-                } catch (error) {
-                    console.error("Error submitting form:", error);
-                    alert("Something went wrong. Please try again.");
-                }
-            });
+        const result = await response.json();
 
-
-        </script>
-    </div>
+        if (result.status === 1) {
+          alert("Signup successful!");
+          form.reset();
+        } else {
+          alert("Error: " + result.message);
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        alert("Something went wrong. Please try again.");
+      }
+    });
+  </script>
 </body>
 
 </html>
