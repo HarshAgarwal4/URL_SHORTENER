@@ -5,7 +5,7 @@ const { makeURLshort, getoriginalurl, getalluserurls } = require('../controllers
 let shortenURLroute = express.Router();
 
 shortenURLroute.post("/shorten", isloggedin, makeURLshort);
-shortenURLroute.get("/:id", getoriginalurl);
+shortenURLroute.get("/url/:id", getoriginalurl);
 shortenURLroute.get("/getalluserurls",isloggedin, getalluserurls);
 
 module.exports = shortenURLroute;

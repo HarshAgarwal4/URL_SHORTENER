@@ -2,212 +2,220 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login Page</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 500px;
-      background: #fff;
-      padding: 25px 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .toggle-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 25px;
-    }
-
-    .toggle-buttons button {
-      flex: 1 1 45%;
-      padding: 12px;
-      background-color: #777;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .toggle-buttons button.active {
-      background-color: #007bff;
-      box-shadow: 0 0 8px #007bffaa;
-    }
-
-    .form-wrapper {
-      display: flex;
-      width: 200%;
-      transition: transform 0.5s ease-in-out;
-    }
-
-    .form-container {
-      width: 50%;
-      padding: 0 20px;
-      box-sizing: border-box;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    h2 {
-      margin-bottom: 20px;
-      color: #333;
-    }
-
-    input {
-      padding: 14px;
-      margin: 10px 0;
-      border: 1.5px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-      transition: border-color 0.3s;
-    }
-
-    input:focus {
-      border-color: #007bff;
-      outline: none;
-    }
-
-    button[type="submit"],
-    button[type="button"] {
-      background-color: #007bff;
-      color: white;
-      padding: 14px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    button[type="button"] {
-      background-color: #6c757d;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    button[type="button"]:hover {
-      background-color: #5a6268;
-    }
-
-    @media (max-width: 650px) {
-      .form-wrapper {
-        flex-direction: column;
-        width: 100%;
-        transform: translateX(0) !important;
-      }
-
-      .form-container {
-        width: 100%;
-        padding: 0;
-        display: none; /* Toggle visibility manually */
-      }
-    }
-  </style>
-
-  <script>
-    function toggleForm(type) {
-      const formWrapper = document.querySelector('.form-wrapper');
-      const userForm = document.getElementById('user_form');
-      const adminForm = document.getElementById('admin_form');
-      const isDesktop = window.innerWidth > 650;
-
-      if (isDesktop) {
-        // Desktop sliding effect
-        formWrapper.style.transform = type === 'admin' ? 'translateX(-50%)' : 'translateX(0)';
-        userForm.style.display = 'block';
-        adminForm.style.display = 'block';
-      } else {
-        // Mobile: toggle visibility
-        if (type === 'admin') {
-          userForm.style.display = 'none';
-          adminForm.style.display = 'block';
-        } else {
-          userForm.style.display = 'block';
-          adminForm.style.display = 'none';
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Login Page</title>
+    <style>
+        /* --- Universal Box-Sizing & Reset --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-        formWrapper.style.transform = 'translateX(0)';
-      }
 
-      // Update active button
-      document.querySelectorAll('.toggle-buttons button').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(type).classList.add('active');
-    }
+        /* --- Body & Layout --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            /* Use Flexbox to center the container */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
 
-    function Back() {
-      window.location.href = "/";
-    }
+        /* --- Main Container --- */
+        .container {
+            /* Mobile-first: flexible width with a max-width for larger screens */
+            width: 90%;
+            max-width: 450px;
+            background: white;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden; /* Important for the sliding effect */
+            position: relative;
+        }
 
-    // Init on load
-    window.addEventListener('load', () => {
-      toggleForm('user');
-    });
+        /* --- Form Sliding Wrapper --- */
+        .form-wrapper {
+            display: flex;
+            width: 200%; /* Holds two forms side-by-side */
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Smoother transition with easing */
+        }
 
-    // Adjust on resize
-    window.addEventListener('resize', () => {
-      const activeBtn = document.querySelector('.toggle-buttons button.active');
-      if (activeBtn) toggleForm(activeBtn.id);
-    });
-  </script>
+        .form-container {
+            width: 50%; /* Each form takes half of the wrapper's width */
+            padding: 0 10px; /* Spacing inside the form container */
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #1c1e21;
+        }
+
+        /* --- Form Elements --- */
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1877f2;
+            box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
+        }
+
+        /* --- Toggle Buttons (User/Admin) --- */
+        .toggle-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            border-radius: 6px;
+            background-color: #e4e6eb;
+            padding: 4px;
+        }
+
+        .toggle-buttons button {
+            flex-grow: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background-color: transparent;
+            color: #606770;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle-buttons button.active {
+            background-color: white;
+            color: #1877f2;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* --- Action Buttons (Login/Back) --- */
+        .form-actions {
+            display: flex;
+            flex-direction: column; /* Stack buttons on mobile */
+            gap: 0.75rem; /* Space between stacked buttons */
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: #1877f2;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #166fe5;
+        }
+
+        .btn-secondary {
+            background-color: #e4e6eb;
+            color: #4b4f56;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #d8dbdf;
+        }
+
+        /* --- Media Query for Larger Screens (Tablets and Desktops) --- */
+        @media (min-width: 480px) {
+            .form-actions {
+                flex-direction: row; /* Place buttons side-by-side */
+            }
+            .form-actions .btn {
+                flex-grow: 1; /* Make both buttons take equal space */
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="toggle-buttons">
-      <button id="user" class="active" onclick="toggleForm('user')">User Login</button>
-      <button id="admin" onclick="toggleForm('admin')">Admin Login</button>
+    <div class="container">
+        <div class="toggle-buttons">
+            <button id="user_toggle" class="active" onclick="toggleForm('user')">User Login</button>
+            <button id="admin_toggle" onclick="toggleForm('admin')">Admin Login</button>
+        </div>
+        <div class="form-wrapper">
+            <!-- User Login Form -->
+            <div class="form-container">
+                <h2>User Login</h2>
+                <form action="/login" method="post" id="user_login_form">
+                    <input type="text" name="username" placeholder="Username" required id="user_username">
+                    <input type="password" name="password" placeholder="Password" required id="user_password">
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
+                    </div>
+                </form>
+            </div>
+            <!-- Admin Login Form -->
+            <div class="form-container">
+                <h2>Admin Login</h2>
+                <form id="admin_login_form" method="post" action="/admin">
+                    <input type="text" name="name" placeholder="Admin Username" required id="admin_username">
+                    <input type="password" name="pass" placeholder="Admin Password" required id="admin_password">
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
-    <div class="form-wrapper">
-      <div class="form-container" id="user_form">
-        <h2>User Login</h2>
-        <form action="/login" method="post">
-          <input type="text" name="username" placeholder="Username" required />
-          <input type="password" name="password" placeholder="Password" required />
-          <button type="submit">Login</button>
-          <button type="button" onclick="Back()">Back</button>
-        </form>
-      </div>
+    <script>
+        function toggleForm(type) {
+            const formWrapper = document.querySelector('.form-wrapper');
+            const userToggle = document.getElementById('user_toggle');
+            const adminToggle = document.getElementById('admin_toggle');
 
-      <div class="form-container" id="admin_form">
-        <h2>Admin Login</h2>
-        <form action="/admin" method="post">
-          <input type="text" name="name" placeholder="Admin Username" required />
-          <input type="password" name="pass" placeholder="Admin Password" required />
-          <button type="submit">Login</button>
-          <button type="button" onclick="Back()">Back</button>
-        </form>
-      </div>
-    </div>
-  </div>
+            if (type === 'admin') {
+                formWrapper.style.transform = 'translateX(-50%)';
+                adminToggle.classList.add('active');
+                userToggle.classList.remove('active');
+            } else {
+                formWrapper.style.transform = 'translateX(0)';
+                userToggle.classList.add('active');
+                adminToggle.classList.remove('active');
+            }
+        }
+
+        function goBack() {
+            // This preserves the original functionality of going to the root "/"
+            // For going to the previous page in history, you could use history.back()
+            window.location.href = "/";
+        }
+
+        // Initialize the view based on a URL hash, if present
+        // e.g., if the URL is "login.html#admin", it will show the admin form
+        document.addEventListener('DOMContentLoaded', () => {
+            if(window.location.hash === '#admin') {
+                toggleForm('admin');
+            }
+        });
+    </script>
 </body>
-
 </html>
