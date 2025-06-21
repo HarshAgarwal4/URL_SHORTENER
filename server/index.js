@@ -37,9 +37,11 @@ app.use("/" , shortenURLroute)
 app.use("/" , adminRouter)
 
 mongoose.connect(process.env.DB_URL, {
-  dbName: "URL_SHORTENER_APP",
+    dbName: "URL_SHORTENER_APP",
 })
-.then(() => console.log("Connected to MongoDB Atlas"))
-.catch((err) => console.error("MongoDB connection error:", err));
-
-module.exports = app;
+.then(() => {
+    console.log("Connected to MongoDB Atlas");
+    app.listen(process.env.PORT || 5000, () => {
+        console.log(`Server running on port ${process.env.PORT || 5000}`);
+    });
+})
